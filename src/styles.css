@@ -187,6 +187,17 @@
   background: var(--status-maintenance);
 }
 
+.marker-dot--selected {
+  box-shadow:
+    0 0 0 2px oklch(0.1 0.03 262 / 55%),
+    0 0 0 5px color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+.marker-dot--pin {
+  background: var(--primary);
+  border-color: oklch(0.98 0.005 250 / 95%);
+}
+
 .leaflet-popup-content-wrapper {
   background: var(--card);
   color: var(--card-foreground);
