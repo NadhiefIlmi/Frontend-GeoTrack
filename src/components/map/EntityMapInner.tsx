@@ -1,9 +1,10 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Minus, Plus, RotateCcw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import { StatusBadge, STATUS_LABELS } from "@/components/entities/StatusBadge";
+import { StatusBadge } from "@/components/entities/StatusBadge";
+import { TYPE_LABELS } from "@/components/entities/labels";
 import { MapLegend } from "./MapLegend";
 import {
   DARK_ATTRIBUTION,
@@ -61,7 +62,7 @@ function ControlButton({
   label: string;
   disabled?: boolean;
   onClick: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
   withDivider?: boolean;
 }) {
   return (
@@ -117,7 +118,7 @@ export default function EntityMapInner({ entities, selectedId, onSelect, focus }
               <div className="min-w-44 space-y-1.5">
                 <p className="font-display text-[13px] font-semibold leading-snug text-foreground">{entity.name}</p>
                 <p className="text-[11px] text-muted-foreground">
-                  {entity.code} · {t(`type.${entity.type}` as never)}
+                  {entity.code} · {t(TYPE_LABELS[entity.type])}
                 </p>
                 <StatusBadge status={entity.status} />
                 <PopupActions entityId={entity.id} onSelect={onSelect} />
