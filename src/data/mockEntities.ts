@@ -88,9 +88,9 @@ function buildEntities(): Entity[] {
   }));
 
   generatedStatuses.forEach((status, i) => {
-    const type = typeOrder[i % 4];
+    const type = typeOrder[i % 4]!;
     const pool = namePools[type];
-    const spot = spots[(i * 5) % spots.length];
+    const spot = spots[(i * 5) % spots.length]!;
     const jitterLat = (((i * 7) % 13) - 6) * 0.0011;
     const jitterLng = (((i * 11) % 17) - 8) * 0.0013;
     counters[type] += 1;
@@ -99,9 +99,9 @@ function buildEntities(): Entity[] {
     list.push({
       id: `ent-${String(list.length + 1).padStart(3, "0")}`,
       code: `${prefix}-${String(counters[type]).padStart(3, "0")}`,
-      name: `${pool[i % pool.length]} - ${spot.area}`,
+      name: `${pool[i % pool.length]!} - ${spot.area}`,
       type,
-      description: `${pool[i % pool.length]} deployed in ${spot.area}, Jakarta.`,
+      description: `${pool[i % pool.length]!} deployed in ${spot.area}, Jakarta.`,
       status,
       latitude: Number((spot.lat + jitterLat).toFixed(4)),
       longitude: Number((spot.lng + jitterLng).toFixed(4)),

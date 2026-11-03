@@ -1,12 +1,12 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Bell, Pencil, Plus, RefreshCw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEntityStore } from "@/state/EntityStore";
 import { relativeTime } from "@/lib/format";
 import { useLanguage } from "@/i18n/language";
-import type { ActivityKind, TranslationKey } from "@/i18n/translations";
-import type { Lang } from "@/i18n/translations";
+import type { TranslationKey } from "@/i18n/translations";
+import type { ActivityKind } from "@/types/entity";
 
 const KIND_ICONS: Record<ActivityKind, typeof Plus> = {
   created: Plus,
@@ -25,7 +25,6 @@ const KIND_LABELS: Record<ActivityKind, TranslationKey> = {
 export function NotificationsPopover() {
   const { activities } = useEntityStore();
   const { t, lang } = useLanguage();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const recent = activities.slice(0, 4);
 
   return (
@@ -49,21 +48,19 @@ export function NotificationsPopover() {
                 <div className="min-w-0">
                   <p className="truncate text-foreground">{t(KIND_LABELS[entry.kind])}</p>
                   <p className="truncate text-xs text-muted-foreground">
-                    {entry.entityCode} · {relativeTime(entry.timestamp, lang as Lang)}
+                    {entry.entityCode} · {relativeTime(entry.timestamp, lang)}
                   </p>
                 </div>
               </div>
             );
           })}
         </div>
-        {pathname !== "/activity" && (
-          <Link
-            to="/activity"
-            className="block border-t border-border px-3 py-2 text-center text-xs font-medium text-primary hover:bg-accent/60"
-          >
-            {t("activity.pageTitle")}
-          </Link>
-        )}
+        <Link
+          to="/activity"
+          className="block border-t border-border px-3 py-2 text-center text-xs font-medium text-primary hover:bg-accent/60"
+        >
+          {t("activity.pageTitle")}
+        </Link>
       </PopoverContent>
     </Popover>
   );
