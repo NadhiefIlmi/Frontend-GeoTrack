@@ -1,12 +1,7 @@
 import { useLanguage } from "@/i18n/language";
 import { ENTITY_STATUSES, type EntityStatus } from "@/types/entity";
 import { cn } from "@/lib/utils";
-
-const STATUS_LABELS: Record<EntityStatus, "status.active" | "status.inactive" | "status.maintenance"> = {
-  active: "status.active",
-  inactive: "status.inactive",
-  maintenance: "status.maintenance",
-};
+import { STATUS_LABELS } from "@/components/entities/labels";
 
 export function MapLegend({ className }: { className?: string }) {
   const { t } = useLanguage();
@@ -21,7 +16,7 @@ export function MapLegend({ className }: { className?: string }) {
         {t("legend.title")}
       </p>
       <ul className="space-y-1">
-        {ENTITY_STATUSES.map((status) => (
+        {ENTITY_STATUSES.map((status: EntityStatus) => (
           <li key={status} className="flex items-center gap-2 text-[11px] text-foreground">
             <span className={`marker-dot marker-dot--${status} !m-0 !h-2.5 !w-2.5`} />
             {t(STATUS_LABELS[status])}
