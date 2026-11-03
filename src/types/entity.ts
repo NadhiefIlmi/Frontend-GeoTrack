@@ -23,7 +23,7 @@ export interface ActivityEntry {
   entityCode: string;
   entityName: string;
   /** Extra context, e.g. "active -> inactive" for status changes. */
-  detail?: string;
+  detail?: string | undefined;
   timestamp: string;
 }
 

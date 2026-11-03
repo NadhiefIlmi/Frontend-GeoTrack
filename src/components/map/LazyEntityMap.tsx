@@ -7,10 +7,10 @@ const EntityMapInner = lazy(() => import("./EntityMapInner"));
 
 export interface EntityMapProps {
   entities: Entity[];
-  selectedId?: string | null;
-  onSelect?: (id: string) => void;
+  selectedId?: string | null | undefined;
+  onSelect?: ((id: string) => void) | undefined;
   /** Pan + zoom to this entity when it changes. */
-  focus?: { lat: number; lng: number; id: string } | null;
+  focus?: { lat: number; lng: number; id: string } | null | undefined;
 }
 
 /**

@@ -12,8 +12,8 @@ import {
 export interface MapPickerProps {
   lat: number | null;
   lng: number | null;
-  readOnly?: boolean;
-  onChange?: (lat: number, lng: number) => void;
+  readOnly?: boolean | undefined;
+  onChange?: ((lat: number, lng: number) => void) | undefined;
 }
 
 function ClickHandler({ readOnly, onChange }: Pick<MapPickerProps, "readOnly" | "onChange">) {
