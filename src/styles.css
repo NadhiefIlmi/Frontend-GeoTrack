@@ -46,57 +46,57 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.17 0.028 262);
-  --foreground: oklch(0.93 0.012 250);
-  --card: oklch(0.21 0.032 262);
-  --card-foreground: oklch(0.93 0.012 250);
-  --popover: oklch(0.21 0.032 262);
-  --popover-foreground: oklch(0.93 0.012 250);
-  --primary: oklch(0.62 0.16 255);
-  --primary-foreground: oklch(0.98 0.005 250);
-  --secondary: oklch(0.26 0.032 262);
-  --secondary-foreground: oklch(0.93 0.012 250);
-  --muted: oklch(0.25 0.028 262);
-  --muted-foreground: oklch(0.65 0.025 255);
-  --accent: oklch(0.28 0.05 258);
-  --accent-foreground: oklch(0.93 0.012 250);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.98 0.005 250);
-  --border: oklch(0.93 0.02 255 / 10%);
-  --input: oklch(0.93 0.02 255 / 14%);
-  --ring: oklch(0.62 0.16 255);
-  --sidebar: oklch(0.14 0.026 264);
-  --sidebar-foreground: oklch(0.93 0.012 250);
-  --status-active: oklch(0.72 0.19 150);
-  --status-inactive: oklch(0.62 0.02 255);
-  --status-maintenance: oklch(0.78 0.15 75);
+  --background: #f4f5f8;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #d56673;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #fdf2f4;
+  --accent-foreground: #d56673;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #d56673;
+  --sidebar: #d56673;
+  --sidebar-foreground: #ffffff;
+  --status-active: #10b981;
+  --status-inactive: #94a3b8;
+  --status-maintenance: #f59e0b;
 }
 
 .dark {
-  --background: oklch(0.17 0.028 262);
-  --foreground: oklch(0.93 0.012 250);
-  --card: oklch(0.21 0.032 262);
-  --card-foreground: oklch(0.93 0.012 250);
-  --popover: oklch(0.21 0.032 262);
-  --popover-foreground: oklch(0.93 0.012 250);
-  --primary: oklch(0.62 0.16 255);
-  --primary-foreground: oklch(0.98 0.005 250);
-  --secondary: oklch(0.26 0.032 262);
-  --secondary-foreground: oklch(0.93 0.012 250);
-  --muted: oklch(0.25 0.028 262);
-  --muted-foreground: oklch(0.65 0.025 255);
-  --accent: oklch(0.28 0.05 258);
-  --accent-foreground: oklch(0.93 0.012 250);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.98 0.005 250);
-  --border: oklch(0.93 0.02 255 / 10%);
-  --input: oklch(0.93 0.02 255 / 14%);
-  --ring: oklch(0.62 0.16 255);
-  --sidebar: oklch(0.14 0.026 264);
-  --sidebar-foreground: oklch(0.93 0.012 250);
-  --status-active: oklch(0.72 0.19 150);
-  --status-inactive: oklch(0.62 0.02 255);
-  --status-maintenance: oklch(0.78 0.15 75);
+  --background: #f4f5f8;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #d56673;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #fdf2f4;
+  --accent-foreground: #d56673;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #d56673;
+  --sidebar: #d56673;
+  --sidebar-foreground: #ffffff;
+  --status-active: #10b981;
+  --status-inactive: #94a3b8;
+  --status-maintenance: #f59e0b;
 }
 
 @layer base {
@@ -136,29 +136,34 @@
 }
 
 .status-badge--active {
-  color: var(--status-active);
-  background: color-mix(in oklab, var(--status-active) 14%, transparent);
-  border-color: color-mix(in oklab, var(--status-active) 30%, transparent);
+  color: #059669;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
 }
 
 .status-badge--inactive {
-  color: var(--muted-foreground);
-  background: color-mix(in oklab, var(--muted-foreground) 12%, transparent);
-  border-color: color-mix(in oklab, var(--muted-foreground) 26%, transparent);
+  color: #64748b;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .status-badge--maintenance {
-  color: var(--status-maintenance);
-  background: color-mix(in oklab, var(--status-maintenance) 14%, transparent);
-  border-color: color-mix(in oklab, var(--status-maintenance) 30%, transparent);
+  color: #d97706;
+  background: #fffbeb;
+  border-color: #fde68a;
 }
 
 /* ---------- Leaflet theming ---------- */
 
 .leaflet-container {
-  background: var(--background);
+  background: #f1f5f9;
   font-family: var(--font-sans);
   outline: none;
+}
+
+/* Dark Navy / Dark Matter Map styling for enterprise GIS (applied only when dark style is active) */
+.map-dark-tiles .leaflet-tile-pane .leaflet-tile {
+  filter: brightness(0.65) invert(1) contrast(1.8) hue-rotate(200deg) saturate(1.3) brightness(0.75);
 }
 
 .entity-marker {
@@ -171,8 +176,8 @@
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 9999px;
-  border: 2px solid oklch(0.98 0.005 250 / 90%);
-  box-shadow: 0 0 0 2px oklch(0.1 0.03 262 / 55%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .marker-dot--active {
@@ -189,45 +194,78 @@
 
 .marker-dot--selected {
   box-shadow:
-    0 0 0 2px oklch(0.1 0.03 262 / 55%),
-    0 0 0 5px color-mix(in oklab, var(--primary) 55%, transparent);
+    0 0 0 2px #ffffff,
+    0 0 0 5px color-mix(in oklab, var(--primary) 65%, transparent);
 }
 
 .marker-dot--pin {
   background: var(--primary);
-  border-color: oklch(0.98 0.005 250 / 95%);
+  border-color: #ffffff;
 }
 
-.leaflet-popup-content-wrapper {
-  background: var(--card);
-  color: var(--card-foreground);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 32px oklch(0.05 0.02 262 / 60%);
+.leaflet-popup-content-wrapper,
+.leaflet-container .leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  box-shadow:
+    0 10px 25px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
 }
 
-.leaflet-popup-tip {
-  background: var(--card);
-  border: 1px solid var(--border);
+.leaflet-pane.leaflet-popup-pane {
+  z-index: 1050 !important;
 }
 
-.leaflet-popup-content {
-  margin: 0.875rem 1rem;
-  line-height: 1.4;
+.leaflet-popup-tip,
+.leaflet-container .leaflet-popup-tip {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: none !important;
 }
 
-.leaflet-popup-close-button {
-  color: var(--muted-foreground) !important;
+.leaflet-popup-content,
+.leaflet-container .leaflet-popup-content {
+  margin: 10px 12px !important;
+  line-height: 1.35 !important;
+  color: #0f172a !important;
+}
+
+.leaflet-popup-content p {
+  margin: 0 !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #94a3b8 !important;
+  padding: 0 !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 15px !important;
+  line-height: 18px !important;
+  text-align: center !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.15s ease !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: #d56673 !important;
+  background: #fdf2f4 !important;
 }
 
 .leaflet-control-attribution {
-  background: oklch(0.14 0.026 264 / 80%) !important;
-  color: var(--muted-foreground) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: #64748b !important;
   font-size: 10px;
 }
 
 .leaflet-control-attribution a {
-  color: var(--muted-foreground) !important;
+  color: #64748b !important;
 }
 
 .leaflet-control-layers {
@@ -235,7 +273,7 @@
   color: var(--card-foreground) !important;
   border: 1px solid var(--border) !important;
   border-radius: var(--radius-md) !important;
-  box-shadow: 0 8px 24px oklch(0.05 0.02 262 / 50%) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
 .leaflet-control-layers-expanded {
@@ -247,7 +285,7 @@
 
 .scroll-thin {
   scrollbar-width: thin;
-  scrollbar-color: var(--muted) transparent;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
 .scroll-thin::-webkit-scrollbar {
@@ -256,6 +294,6 @@
 }
 
 .scroll-thin::-webkit-scrollbar-thumb {
-  background: var(--muted);
+  background: #cbd5e1;
   border-radius: 9999px;
 }

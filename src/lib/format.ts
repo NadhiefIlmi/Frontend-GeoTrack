@@ -15,3 +15,8 @@ export function formatDateTime(iso: string, lang: Lang): string {
 export function formatCoord(value: number): string {
   return value.toFixed(5);
 }
+
+export function roundCoord(value: number, digits = 6): number {
+  const factor = 10 ** digits;
+  return Math.round(value * factor) / factor;
+}
