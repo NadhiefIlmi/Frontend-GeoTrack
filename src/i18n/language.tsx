@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { LANG_STORAGE_KEY, translations, type Lang, type TranslationKey } from "./translations";
 
 type TranslationParams = Record<string, string | number>;
@@ -12,6 +20,7 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 function interpolate(template: string, params?: TranslationParams): string {
+  if (!template) return "";
   if (!params) return template;
   return template.replace(/\{\{(\w+)\}\}/g, (match, key: string) =>
     key in params ? String(params[key]) : match,
@@ -33,8 +42,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: TranslationKey, params?: TranslationParams) =>
-      interpolate(translations[lang][key] ?? translations.en[key], params),
+    (key: TranslationKey, params?: TranslationParams) => {
+      const template = translations[lang]?.[key] ?? translations.en?.[key] ?? (key as string);
+      return interpolate(template, params);
+    },
     [lang],
   );
 

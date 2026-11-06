@@ -17,10 +17,16 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1.5 px-2 text-muted-foreground hover:text-foreground">
-          <Globe className="size-4" />
-          <span className="text-xs font-semibold tracking-wide">{LANG_LABELS[lang].short}</span>
-          <ChevronDown className="size-3" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1.5 px-2.5 py-1.5 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg"
+        >
+          <Globe className="size-4 text-slate-600" />
+          <span className="text-xs font-semibold tracking-wide text-slate-800">
+            {LANG_LABELS[lang].short}
+          </span>
+          <ChevronDown className="size-3 text-slate-400" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-44 border-border bg-popover">
@@ -32,11 +38,12 @@ export function LanguageSwitcher() {
               setLang(option);
               toast.success(t("toast.language"));
             }}
-            className="gap-2 text-[13px]"
+            className="gap-2 text-[13px] font-medium"
           >
-            <span aria-hidden>{LANG_LABELS[option].flag}</span>
             <span>{LANG_LABELS[option].name}</span>
-            <Check className={cn("ml-auto size-3.5", option === lang ? "opacity-100" : "opacity-0")} />
+            <Check
+              className={cn("ml-auto size-3.5", option === lang ? "opacity-100" : "opacity-0")}
+            />
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
