@@ -4,5 +4,9 @@ import { STATUS_LABELS } from "./labels";
 
 export function StatusBadge({ status, className }: { status: EntityStatus; className?: string }) {
   const { t } = useLanguage();
-  return <span className={`status-badge status-badge--${status} ${className ?? ""}`}>{t(STATUS_LABELS[status])}</span>;
+  return (
+    <span className={`status-badge status-badge--${status} ${className ?? ""}`}>
+      {t(STATUS_LABELS[status])}
+    </span>
+  );
 }
