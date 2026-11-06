@@ -2,6 +2,8 @@
 
 GeoTrack Frontend adalah antarmuka web modern berbasis **TanStack Start (React 19, SSR, Vite)** yang dirancang untuk memvisualisasikan dan mengelola aset fisik berbasis lokasi geografis (*Vehicles, IoT Devices, Facilities, Infrastructure*) secara interaktif.
 
+> 🔗 **Repositori Terkait:** Backend REST API yang menggerakkan sistem ini tersedia di [**Backend-GeoTrack (Golang)**](https://github.com/NadhiefIlmi/Backend-GeoTrack).
+
 ---
 
 ## 🌟 Fitur Utama
@@ -121,4 +123,13 @@ pnpm lint
 # Membangun bundle produksi
 pnpm build
 ```
+
+---
+
+## 🔗 Ekosistem Repositori GeoTrack
+
+| Komponen | Repositori GitHub | Deskripsi & Stack |
+|---|---|---|
+| **Frontend Web App** | [Frontend-GeoTrack](https://github.com/NadhiefIlmi/Frontend-GeoTrack) | Antarmuka interaktif spasial (TanStack Start, React 19, Leaflet, Tailwind CSS) |
+| **Backend REST API** | [Backend-GeoTrack](https://github.com/NadhiefIlmi/Backend-GeoTrack) | REST API berkinerja tinggi (Golang, Chi Router, PostgreSQL, pgxpool) |
 
