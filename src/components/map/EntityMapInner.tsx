@@ -1,11 +1,13 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Minus, Plus, RotateCcw } from "lucide-react";
+import { ArrowRight, Minus, Plus, RotateCcw } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { StatusBadge } from "@/components/entities/StatusBadge";
-import { TYPE_LABELS } from "@/components/entities/labels";
+import { TypeBadge } from "@/components/entities/TypeIcon";
+import type { Entity } from "@/types/entity";
 import { MapLegend } from "./MapLegend";
+import { MapStyleSwitcher, type MapStyle, MAP_STYLE_STORAGE_KEY } from "./MapStyleSwitcher";
 import {
   DARK_ATTRIBUTION,
   DARK_TILES,
@@ -13,9 +15,13 @@ import {
   JAKARTA_CENTER,
   STANDARD_ATTRIBUTION,
   STANDARD_TILES,
+  SATELLITE_TILES,
+  SATELLITE_LABELS,
+  SATELLITE_ATTRIBUTION,
   getEntityIcon,
 } from "./mapIcons";
 import { useLanguage } from "@/i18n/language";
+import { cn } from "@/lib/utils";
 import type { EntityMapProps } from "./LazyEntityMap";
 
 function MapInstanceSetter({ onReady }: { onReady: (map: L.Map) => void }) {
@@ -23,6 +29,20 @@ function MapInstanceSetter({ onReady }: { onReady: (map: L.Map) => void }) {
   useEffect(() => {
     onReady(map);
   }, [map, onReady]);
+  return null;
+}
+
+function AutoResizeHandler() {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    if (!container || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
   return null;
 }
 
@@ -35,20 +55,48 @@ function FocusHandler({ focus }: { focus: EntityMapProps["focus"] }) {
   return null;
 }
 
-function PopupActions({ entityId, onSelect }: { entityId: string; onSelect?: (id: string) => void }) {
+function EntityPopupCard({
+  entity,
+  onSelect,
+}: {
+  entity: Entity;
+  onSelect?: ((id: string) => void) | undefined;
+}) {
   const { t } = useLanguage();
   const map = useMap();
+
   return (
-    <button
-      type="button"
-      onClick={() => {
-        onSelect?.(entityId);
-        map.closePopup();
-      }}
-      className="mt-2 inline-flex w-full items-center justify-center rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-    >
-      {t("action.viewDetails")}
-    </button>
+    <div className="w-[210px] text-slate-800">
+      {/* Header: Type Badge & Entity Code */}
+      <div className="flex items-center justify-between gap-2 pr-4">
+        <TypeBadge type={entity.type} className="text-[10px] px-1.5 py-0.5" />
+        <span className="font-mono text-[10px] font-semibold text-slate-400">{entity.code}</span>
+      </div>
+
+      {/* Entity Name */}
+      <h4
+        className="mt-1 font-display text-[13px] font-bold leading-tight text-slate-900 line-clamp-2"
+        title={entity.name}
+      >
+        {entity.name}
+      </h4>
+
+      {/* Bottom row: Status badge + Compact Action button */}
+      <div className="mt-2 flex items-center justify-between gap-1.5 border-t border-slate-100 pt-1.5">
+        <StatusBadge status={entity.status} className="!text-[10px] !py-0.5 !px-2 !leading-none" />
+        <button
+          type="button"
+          onClick={() => {
+            onSelect?.(entity.id);
+            map.closePopup();
+          }}
+          className="inline-flex h-6.5 items-center gap-1 rounded-md bg-[#D56673] px-2.5 text-[11px] font-semibold text-white shadow-xs transition-all hover:bg-[#c25562] active:scale-95 cursor-pointer shrink-0"
+        >
+          <span>{t("action.viewDetails")}</span>
+          <ArrowRight className="size-3" />
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -82,12 +130,67 @@ function ControlButton({
   );
 }
 
-export default function EntityMapInner({ entities, selectedId, onSelect, focus }: EntityMapProps) {
+function PopupManager({ selectedId }: { selectedId?: string | null | undefined }) {
+  const map = useMap();
+  useEffect(() => {
+    if (selectedId) {
+      map.closePopup();
+    }
+  }, [selectedId, map]);
+  return null;
+}
+
+function MapStyleEffect({ style }: { style: MapStyle }) {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    if (style === "dark") {
+      container.classList.add("map-dark-tiles");
+    } else {
+      container.classList.remove("map-dark-tiles");
+    }
+  }, [style, map]);
+  return null;
+}
+
+export default function EntityMapInner({
+  entities,
+  selectedId,
+  onSelect,
+  focus,
+  detailOpen,
+}: EntityMapProps) {
   const { t } = useLanguage();
   const [map, setMap] = useState<L.Map | null>(null);
+  const [mapStyle, setMapStyle] = useState<MapStyle>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem(MAP_STYLE_STORAGE_KEY) as MapStyle | null;
+        if (stored === "dark" || stored === "standard" || stored === "satellite") {
+          return stored;
+        }
+      } catch {
+        // Ignore localStorage read errors in SSR/sandboxed environment
+      }
+    }
+    return "dark";
+  });
+
+  function handleStyleChange(style: MapStyle) {
+    setMapStyle(style);
+    try {
+      localStorage.setItem(MAP_STYLE_STORAGE_KEY, style);
+    } catch {
+      // Ignore localStorage write errors in private mode
+    }
+  }
+
+  // Keep popups safely to the left and top of floating dashboard / detail panels
+  const autoPanRight = detailOpen ? 880 : 540;
+  const autoPanBottom = 360;
 
   return (
-    <div className="relative h-full w-full">
+    <div className={cn("relative h-full w-full", mapStyle === "dark" && "map-dark-tiles")}>
       <MapContainer
         center={JAKARTA_CENTER}
         zoom={INITIAL_ZOOM}
@@ -96,43 +199,69 @@ export default function EntityMapInner({ entities, selectedId, onSelect, focus }
         className="z-0 h-full w-full"
       >
         <MapInstanceSetter onReady={setMap} />
+        <AutoResizeHandler />
+        <MapStyleEffect style={mapStyle} />
         <FocusHandler focus={focus} />
+        <PopupManager selectedId={selectedId} />
 
-        <LayersControl position="topleft">
-          <LayersControl.BaseLayer checked name={t("map.dark")}>
-            <TileLayer url={DARK_TILES} attribution={DARK_ATTRIBUTION} />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name={t("map.standard")}>
-            <TileLayer url={STANDARD_TILES} attribution={STANDARD_ATTRIBUTION} />
-          </LayersControl.BaseLayer>
-        </LayersControl>
+        {/* 100% Free Public Base Tile Providers */}
+        {mapStyle === "dark" && (
+          <TileLayer key="dark-tiles" url={DARK_TILES} attribution={DARK_ATTRIBUTION} />
+        )}
+        {mapStyle === "standard" && (
+          <TileLayer key="standard-tiles" url={STANDARD_TILES} attribution={STANDARD_ATTRIBUTION} />
+        )}
+        {mapStyle === "satellite" && (
+          <>
+            <TileLayer
+              key="satellite-base-tiles"
+              url={SATELLITE_TILES}
+              attribution={SATELLITE_ATTRIBUTION}
+              maxZoom={19}
+            />
+            <TileLayer
+              key="satellite-labels-tiles"
+              url={SATELLITE_LABELS}
+              maxZoom={19}
+              opacity={0.88}
+            />
+          </>
+        )}
 
         {entities.map((entity) => (
           <Marker
             key={entity.id}
             position={[entity.latitude, entity.longitude]}
-            icon={getEntityIcon(entity.status, selectedId === entity.id)}
-            eventHandlers={{ click: () => onSelect?.(entity.id) }}
+            icon={getEntityIcon(entity.status, entity.type, selectedId === entity.id)}
           >
-            <Popup>
-              <div className="min-w-44 space-y-1.5">
-                <p className="font-display text-[13px] font-semibold leading-snug text-foreground">{entity.name}</p>
-                <p className="text-[11px] text-muted-foreground">
-                  {entity.code} · {t(TYPE_LABELS[entity.type])}
-                </p>
-                <StatusBadge status={entity.status} />
-                <PopupActions entityId={entity.id} onSelect={onSelect} />
-              </div>
+            <Popup
+              autoPan
+              autoPanPaddingTopLeft={[80, 80]}
+              autoPanPaddingBottomRight={[autoPanRight, autoPanBottom]}
+            >
+              <EntityPopupCard entity={entity} onSelect={onSelect} />
             </Popup>
           </Marker>
         ))}
       </MapContainer>
 
+      {/* Floating Map Style Switcher (Top Left) */}
+      <MapStyleSwitcher
+        currentStyle={mapStyle}
+        onStyleChange={handleStyleChange}
+        className="absolute left-3 top-3"
+      />
+
       <div className="absolute right-3 top-3 z-[1000] flex flex-col overflow-hidden rounded-lg border border-border bg-card/90 shadow-lg backdrop-blur-sm">
         <ControlButton label={t("map.zoomIn")} disabled={!map} onClick={() => map?.zoomIn()}>
           <Plus className="size-4" />
         </ControlButton>
-        <ControlButton label={t("map.zoomOut")} disabled={!map} onClick={() => map?.zoomOut()} withDivider>
+        <ControlButton
+          label={t("map.zoomOut")}
+          disabled={!map}
+          onClick={() => map?.zoomOut()}
+          withDivider
+        >
           <Minus className="size-4" />
         </ControlButton>
         <ControlButton

@@ -4,6 +4,8 @@ import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from "react-lea
 import {
   DARK_ATTRIBUTION,
   DARK_TILES,
+  STANDARD_ATTRIBUTION,
+  STANDARD_TILES,
   JAKARTA_CENTER,
   getPinIcon,
   roundCoord,
@@ -52,7 +54,7 @@ export default function MapPickerInner({ lat, lng, readOnly, onChange }: MapPick
       keyboard={interactive}
       className="z-0 h-full w-full"
     >
-      <TileLayer url={DARK_TILES} attribution={DARK_ATTRIBUTION} />
+      <TileLayer url={STANDARD_TILES} attribution={STANDARD_ATTRIBUTION} />
       <ClickHandler readOnly={readOnly} onChange={onChange} />
       {hasPosition && <Recenter lat={lat} lng={lng} />}
       {hasPosition && <Marker position={[lat, lng]} icon={getPinIcon()} interactive={false} />}

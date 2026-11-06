@@ -11,19 +11,21 @@ export interface EntityMapProps {
   onSelect?: ((id: string) => void) | undefined;
   /** Pan + zoom to this entity when it changes. */
   focus?: { lat: number; lng: number; id: string } | null | undefined;
+  detailOpen?: boolean | undefined;
+  isLoading?: boolean;
 }
 
 /**
  * Client-only wrapper: Leaflet is browser-only, so the inner map module is
  * dynamically imported after the component mounts (never during SSR).
  */
-export function LazyEntityMap({ className, ...props }: EntityMapProps & { className?: string }) {
+export function LazyEntityMap({ className, isLoading = false, ...props }: EntityMapProps & { className?: string }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   return (
     <div className={className}>
-      {mounted ? (
+      {mounted && !isLoading ? (
         <Suspense fallback={<MapSkeleton />}>
           <EntityMapInner {...props} />
         </Suspense>

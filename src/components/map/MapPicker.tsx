@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { MapSkeleton } from "./MapSkeleton";
 import type { MapPickerProps } from "./MapPickerInner";
+import { MapSkeleton } from "./MapSkeleton";
 
 const MapPickerInner = lazy(() => import("./MapPickerInner"));
 
@@ -13,7 +13,7 @@ export function MapPicker({ className, ...props }: MapPickerProps & { className?
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className={className}>
+    <div className={className ?? "h-full w-full"}>
       {mounted ? (
         <Suspense fallback={<MapSkeleton />}>
           <MapPickerInner {...props} />
